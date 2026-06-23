@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+pdfplumber
+python-docx
+pydantic
+openai
+streamlit
+pytest
+python-dotenv
