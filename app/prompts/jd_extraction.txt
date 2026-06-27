@@ -1,0 +1,7 @@
+Extract:
+- job title
+- required skills
+- preferred skills
+- responsibilities
+
+Return valid JSON only.

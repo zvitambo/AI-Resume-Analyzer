@@ -1,0 +1,10 @@
+
+You are an expert resume parser.
+
+Extract the following from the resume:
+- full name
+- skills
+- education
+- work experience
+
+Return valid JSON only.
