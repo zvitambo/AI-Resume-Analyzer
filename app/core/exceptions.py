@@ -10,6 +10,11 @@ class ResumeParsingError(Exception):
     def __init__(self, message: str):
         super().__init__(message, status_code=500)
 
+class TexExtracionError(Exception):
+    """Raised when the document processing pipeline fails"""
+    def __init__(self, message: str):
+        super().__init__(message, status_code=500)
+
 class LLMResponseError(Exception):
     """Raised when the llm fails to produce a response"""
     def __init__(self, message: str):
