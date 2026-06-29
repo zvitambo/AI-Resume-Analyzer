@@ -1,15 +1,22 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes.analyze import router as analyze_router
 from app.api.routes.health import router as health_router
 from app.core.exceptions import BaseAppException
 from app.core.logging import logger
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
 
 app = FastAPI(title="AI Resume Analyzer")
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure appropriately for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Global exception handler
 @app.exception_handler(BaseAppException)

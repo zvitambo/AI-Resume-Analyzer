@@ -34,3 +34,11 @@ class UnauthorizedException(BaseAppException):
     """Raised when user is not authorized"""
     def __init__(self, message: str):
         super().__init__(message, status_code=401)
+
+class InvalidFileTypeError(BaseAppException):
+    """
+    Raised when the uploaded file type
+    is unsupported.
+    """
+    def __init__(self, message: str):
+        super().__init__(message, status_code=500)

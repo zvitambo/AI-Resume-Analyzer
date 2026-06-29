@@ -8,17 +8,17 @@ from langchain_core.output_parsers import StrOutputParser
 
 from app.core.config import settings
 
-extract_resume_data_prompt_text = "app\prompts\resume_extraction.txt"
+extract_resume_data_prompt_text = "app\prompts\\resume_extraction.txt"
 extract_jd_data_prompt_text = "app\prompts\jd_extraction.txt"
-generate_analysis_prompt_text = "app\prompts\analysis_prompt.txt"
+generate_analysis_prompt_text = "app\prompts\\analysis_prompt.txt"
 
-with open(extract_resume_data_prompt_text, "f") as file:
+with open(extract_resume_data_prompt_text, "r") as file:
     extract_resume_data_prompt=file.read()
 
-with open(extract_jd_data_prompt_text, "f") as file:
+with open(extract_jd_data_prompt_text, "r") as file:
     extract_jd_data_prompt=file.read()
 
-with open(generate_analysis_prompt_text, "f") as file:
+with open(generate_analysis_prompt_text, "r") as file:
     generate_analysis_prompt=file.read()
 
 
@@ -27,41 +27,41 @@ with open(generate_analysis_prompt_text, "f") as file:
 
 class LlamaChat:
     def __init__(self):
-        self.model_name=settings.model_name,
-        self.extract_resume_data_prompt=extract_resume_data_prompt
-        self.extract_jd_data_prompt=extract_jd_data_prompt
-        self.generate_analysis_prompt=generate_analysis_prompt 
+        self.model_name = settings.model_name
+        self.extract_resume_data_prompt = extract_resume_data_prompt
+        self.extract_jd_data_prompt = extract_jd_data_prompt
+        self.generate_analysis_prompt = generate_analysis_prompt 
         self.messages = []
 
 
     def extract_resume_data_response(self, resume_text):
-        user_input=f"{self.extract_resume_data_prompt}, resume text: {resume_text}"
+        user_input = f"{self.extract_resume_data_prompt}, resume text: {resume_text}"
         self.messages.append({"role": "user", "content": user_input})
         response = generate(
             model=self.model_name,
-            messages=self.messages
+            prompt=user_input
         )
         self.messages.append({"role": "assistant", "content": response})
 
         return response.message.content
     
     def extract_jd_data_response(self, jd_text):
-        user_input=f"{self.extract_jd_data_prompt}, job description text: {jd_text}"
+        user_input = f"{self.extract_jd_data_prompt}, job description text: {jd_text}"
         self.messages.append({"role": "user", "content": user_input})
         response = generate(
             model=self.model_name,
-            messages=self.messages
+            prompt=user_input
         )
         self.messages.append({"role": "assistant", "content": response})
 
         return response.message.content
     
     def generate_analysis_response(self, resume_data: dict, jd_data: dict, score: float):
-        user_input=f"{self.generate_analysis_prompt}, resume data: {resume_data}, job description data: {jd_data}, score: {score}"
+        user_input = f"{self.generate_analysis_prompt}, resume data: {resume_data}, job description data: {jd_data}, score: {score}"
         self.messages.append({"role": "user", "content": user_input})
         response = generate(
             model=self.model_name,
-            messages=self.messages
+            prompt=user_input
         )
         self.messages.append({"role": "assistant", "content": response})
 
@@ -93,5 +93,5 @@ class LangChainLlamaChat:
         return response["text"]
     
     def generate_analysis_response(self, resume_data: dict, jd_data: dict, score: float):
-        response = self.chain.invoke({"system_prompt": self.generate_analysis_prompt, "input": str(resume_data, jd_data, score)})
+        response = self.chain.invoke({"system_prompt": self.generate_analysis_prompt, "input": f"{resume_data}, {jd_data}, {score}"})
         return response["text"]
